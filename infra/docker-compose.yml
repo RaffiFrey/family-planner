@@ -1,0 +1,46 @@
+name: family-planer
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: fp
+      POSTGRES_PASSWORD: fp
+      POSTGRES_DB: family_planer
+    ports: ['5432:5432']
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U fp -d family_planer']
+      interval: 5s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    ports: ['6379:6379']
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      retries: 10
+
+  # S3-compatible object storage (SeaweedFS; production uses Scaleway/Hetzner Object Storage).
+  s3:
+    image: chrislusf/seaweedfs:latest
+    command: server -dir=/data -s3 -s3.port=8333 -s3.config=/etc/seaweedfs/s3.json -master.volumeSizeLimitMB=1024
+    ports: ['8333:8333']
+    volumes:
+      - s3data:/data
+      - ./seaweedfs/s3.json:/etc/seaweedfs/s3.json:ro
+
+  mailpit:
+    image: axllent/mailpit:latest
+    ports: ['1025:1025', '8025:8025']
+
+  # Virus scanning is heavy (~1 GB RAM); start with `docker compose --profile full up`.
+  clamav:
+    image: clamav/clamav:stable
+    profiles: [full]
+    ports: ['3310:3310']
+
+volumes:
+  pgdata:
+  s3data:
