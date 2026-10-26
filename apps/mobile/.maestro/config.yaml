@@ -1,0 +1,11 @@
+# Flow order: later flows reuse the session created by the sign-up flow.
+flows:
+  - sign-up-and-chore.yaml
+  - shopping-list.yaml
+  - pinboard-and-emergency.yaml
+executionOrder:
+  continueOnFailure: false
+  flowsOrder:
+    - sign-up-and-chore
+    - shopping-list
+    - pinboard-and-emergency

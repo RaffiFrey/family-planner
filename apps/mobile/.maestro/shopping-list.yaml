@@ -1,0 +1,19 @@
+# Runs after sign-up-and-chore.yaml (reuses the signed-in session, no clearState).
+appId: app.familyplaner.mobile
+---
+- launchApp
+- extendedWaitUntil:
+    visible: 'Lists'
+    timeout: 60000
+- tapOn: 'Lists'
+- tapOn: '(Einkauf|Groceries).*'
+- tapOn: 'Add item …'
+- inputText: 'Milk'
+- pressKey: Enter
+- extendedWaitUntil:
+    visible: 'Milk'
+    timeout: 15000
+- tapOn: 'Milk'
+- extendedWaitUntil:
+    visible: '.*(Done|Checked).*'
+    timeout: 10000

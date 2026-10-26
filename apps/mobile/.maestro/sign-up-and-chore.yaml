@@ -1,0 +1,58 @@
+# Native E2E on an Android emulator/device (English system language) with the debug build
+# installed, Metro running and the API reachable (adb reverse tcp:8081 / tcp:4000):
+#   maestro test apps/mobile/.maestro
+appId: app.familyplaner.mobile
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: 'No account yet\? Sign up'
+    timeout: 90000
+- tapOn: 'No account yet\? Sign up'
+- tapOn:
+    below: 'Name'
+    index: 0
+- inputText: 'Maestro'
+- tapOn:
+    below: 'Email'
+    index: 0
+- inputRandomEmail
+- tapOn:
+    below: 'Password'
+    index: 0
+- inputText: 'correct-horse-battery'
+- hideKeyboard
+- tapOn:
+    text: 'Sign up'
+    index: 0
+- extendedWaitUntil:
+    visible: 'Create a household'
+    timeout: 30000
+- tapOn:
+    below: 'Household name'
+    index: 0
+- inputText: 'Familie Maestro'
+- hideKeyboard
+- scrollUntilVisible:
+    element: 'Create household'
+- tapOn: 'Create household'
+- extendedWaitUntil:
+    visible: 'Tasks'
+    timeout: 30000
+- tapOn: 'Tasks'
+- tapOn: 'New task'
+- tapOn:
+    below: 'Title'
+    index: 0
+- inputText: 'Water the plants'
+- hideKeyboard
+- scrollUntilVisible:
+    element: 'Save'
+- tapOn: 'Save'
+- extendedWaitUntil:
+    visible: 'Water the plants'
+    timeout: 15000
+- tapOn: 'Complete "Water the plants"'
+- extendedWaitUntil:
+    notVisible: 'Complete "Water the plants"'
+    timeout: 10000
