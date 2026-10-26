@@ -46,6 +46,7 @@ export function CreateHouseholdForm({
   return (
     <View className="gap-4">
       <TextField
+        testID="household-name"
         label={t('m.onboarding.householdName')}
         placeholder={t('m.onboarding.householdNamePlaceholder')}
         value={name}
@@ -65,6 +66,7 @@ export function CreateHouseholdForm({
       />
       {create.error ? <Text className="text-danger">{errorMessage(create.error, t)}</Text> : null}
       <Button
+        testID="household-create"
         title={t('m.onboarding.create')}
         disabled={!valid}
         loading={create.isPending}

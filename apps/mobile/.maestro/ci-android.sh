@@ -2,6 +2,7 @@
 # Runs the Maestro flows on the CI emulator (called from .github/workflows/mobile.yml, repo root as cwd).
 # On failure the tails of the logs are emitted as workflow annotations so they show on the run page.
 set -uo pipefail
+export MAESTRO_CLI_NO_ANALYTICS=1
 
 annotate() {
   local title=$1 file=$2

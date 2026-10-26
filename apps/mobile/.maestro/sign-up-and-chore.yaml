@@ -9,33 +9,33 @@ appId: app.familyplaner.mobile
     visible: 'No account yet\? Sign up'
     timeout: 90000
 - tapOn: 'No account yet\? Sign up'
+# Stable ids instead of label positions: screen sizes differ between emulators, and Android's
+# hideKeyboard can fall back to the back button, which leaves the sign-up screen.
 - tapOn:
-    below: 'Name'
-    index: 0
+    id: 'auth-name'
 - inputText: 'Maestro'
 - tapOn:
-    below: 'Email'
-    index: 0
+    id: 'auth-email'
 - inputRandomEmail
 - tapOn:
-    below: 'Password'
-    index: 0
+    id: 'auth-password'
 - inputText: 'correct-horse-battery'
-- hideKeyboard
+- scrollUntilVisible:
+    element:
+      id: 'auth-submit'
 - tapOn:
-    text: 'Sign up'
-    index: 0
+    id: 'auth-submit'
 - extendedWaitUntil:
     visible: 'Create a household'
     timeout: 30000
 - tapOn:
-    below: 'Household name'
-    index: 0
+    id: 'household-name'
 - inputText: 'Familie Maestro'
-- hideKeyboard
 - scrollUntilVisible:
-    element: 'Create household'
-- tapOn: 'Create household'
+    element:
+      id: 'household-create'
+- tapOn:
+    id: 'household-create'
 - extendedWaitUntil:
     visible: 'Tasks'
     timeout: 30000

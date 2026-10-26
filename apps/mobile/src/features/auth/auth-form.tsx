@@ -65,6 +65,7 @@ export function AuthForm({ mode }: { mode: 'signIn' | 'signUp' }) {
           name="name"
           render={({ field }) => (
             <TextField
+              testID="auth-name"
               label={t('common.name')}
               value={field.value}
               onChangeText={field.onChange}
@@ -81,6 +82,7 @@ export function AuthForm({ mode }: { mode: 'signIn' | 'signUp' }) {
         name="email"
         render={({ field }) => (
           <TextField
+            testID="auth-email"
             label={t('common.email')}
             value={field.value}
             onChangeText={field.onChange}
@@ -98,6 +100,7 @@ export function AuthForm({ mode }: { mode: 'signIn' | 'signUp' }) {
         name="password"
         render={({ field }) => (
           <TextField
+            testID="auth-password"
             label={t('common.password')}
             value={field.value}
             onChangeText={field.onChange}
@@ -115,6 +118,7 @@ export function AuthForm({ mode }: { mode: 'signIn' | 'signUp' }) {
         </Text>
       ) : null}
       <Button
+        testID="auth-submit"
         title={mode === 'signUp' ? t('common.signUp') : t('common.signIn')}
         loading={formState.isSubmitting}
         onPress={() => void onSubmit()}
