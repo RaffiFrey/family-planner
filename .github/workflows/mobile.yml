@@ -12,7 +12,7 @@ jobs:
   maestro-android:
     name: Native E2E (Android emulator + Maestro)
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 75
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v4
@@ -45,6 +45,7 @@ jobs:
           api-level: 35
           arch: x86_64
           target: google_apis
+          emulator-boot-timeout: 900
           script: bash apps/mobile/.maestro/ci-android.sh
       - if: always()
         uses: actions/upload-artifact@v4
