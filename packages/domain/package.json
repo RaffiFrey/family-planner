@@ -1,0 +1,70 @@
+{
+  "name": "@fp/domain",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./money": {
+      "types": "./dist/money/index.d.ts",
+      "default": "./dist/money/index.js"
+    },
+    "./time": {
+      "types": "./dist/time/index.d.ts",
+      "default": "./dist/time/index.js"
+    },
+    "./recurrence": {
+      "types": "./dist/recurrence/index.d.ts",
+      "default": "./dist/recurrence/index.js"
+    },
+    "./finance": {
+      "types": "./dist/finance/index.d.ts",
+      "default": "./dist/finance/index.js"
+    },
+    "./permissions": {
+      "types": "./dist/permissions/index.d.ts",
+      "default": "./dist/permissions/index.js"
+    },
+    "./family": {
+      "types": "./dist/family/index.d.ts",
+      "default": "./dist/family/index.js"
+    },
+    "./care": {
+      "types": "./dist/care/index.d.ts",
+      "default": "./dist/care/index.js"
+    },
+    "./assistant": {
+      "types": "./dist/assistant/index.d.ts",
+      "default": "./dist/assistant/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "dev": "tsc -p tsconfig.build.json --watch --preserveWatchOutput",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "lint": "eslint .",
+    "test": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@date-fns/tz": "^1.5.0",
+    "@noble/hashes": "^2.4.0",
+    "date-fns": "^4.4.0",
+    "dinero.js": "^2.0.2",
+    "fast-xml-parser": "^5.11.2",
+    "papaparse": "^5.7.0",
+    "rrule": "^2.8.1"
+  },
+  "devDependencies": {
+    "@fp/config": "workspace:*",
+    "@types/papaparse": "^5.5.2",
+    "@vitest/coverage-v8": "^5.0.5",
+    "eslint": "^10.13.0",
+    "fast-check": "^4.10.2",
+    "typescript": "6.0.3",
+    "vitest": "^5.0.5"
+  }
+}
