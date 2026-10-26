@@ -72,9 +72,12 @@ jobs:
       - run: cp .env.example .env && docker compose -f infra/docker-compose.yml up -d --wait postgres redis s3 mailpit
       - run: pnpm turbo run build --filter "@fp/api..." --filter "@fp/web..."
       - run: pnpm db:migrate && pnpm db:seed
-      - run: (pnpm --filter @fp/api start > api.log 2>&1 &) && npx wait-on http://localhost:4000/v1/health
+      # --env-file is not allowed in NODE_OPTIONS; test mode disables rate limits and lets the
+      # recipe-import spec fetch its local fixture page.
+      - run: (cd apps/api && node --env-file=../../.env --enable-source-maps dist/main.js > ../../api.log 2>&1 &) && npx wait-on -t 120000 http://localhost:4000/v1/health
         env:
-          NODE_OPTIONS: --env-file=../../.env
+          NODE_ENV: test
+          RECIPE_FETCH_ALLOW_PRIVATE: 'true'
       - run: pnpm --filter @fp/web exec playwright install --with-deps chromium
       - run: pnpm --filter @fp/web exec playwright test --project=chromium
         env:
