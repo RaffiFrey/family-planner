@@ -51,7 +51,16 @@ jobs:
             npx wait-on http://localhost:4000/v1/health http://localhost:8081/status
             adb reverse tcp:8081 tcp:8081 && adb reverse tcp:4000 tcp:4000
             adb install -r apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk
-            $HOME/.maestro/bin/maestro test apps/mobile/.maestro/config.yaml apps/mobile/.maestro
+            curl -sf -o /dev/null --max-time 600 "http://localhost:8081/node_modules/expo-router/entry.bundle?platform=android&dev=true&minify=false"
+            $HOME/.maestro/bin/maestro test --debug-output maestro-debug apps/mobile/.maestro/config.yaml apps/mobile/.maestro
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-android
+          path: |
+            api.log
+            metro.log
+            maestro-debug/
 
   eas:
     name: EAS build (preview)
