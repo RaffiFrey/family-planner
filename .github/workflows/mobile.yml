@@ -45,14 +45,7 @@ jobs:
           api-level: 35
           arch: x86_64
           target: google_apis
-          script: |
-            (cd apps/api && node --env-file=../../.env dist/main.js > ../../api.log 2>&1 &)
-            (cd apps/mobile && CI=1 npx expo start --port 8081 > ../../metro.log 2>&1 &)
-            npx wait-on http://localhost:4000/v1/health http://localhost:8081/status
-            adb reverse tcp:8081 tcp:8081 && adb reverse tcp:4000 tcp:4000
-            adb install -r apps/mobile/android/app/build/outputs/apk/debug/app-debug.apk
-            curl -sf -o /dev/null --max-time 600 "http://localhost:8081/node_modules/expo-router/entry.bundle?platform=android&dev=true&minify=false"
-            $HOME/.maestro/bin/maestro test --debug-output maestro-debug apps/mobile/.maestro/config.yaml apps/mobile/.maestro
+          script: bash apps/mobile/.maestro/ci-android.sh
       - if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -60,6 +53,8 @@ jobs:
           path: |
             api.log
             metro.log
+            maestro.log
+            logcat.txt
             maestro-debug/
 
   eas:
