@@ -64,6 +64,16 @@ maestro test apps/mobile/.maestro/config.yaml apps/mobile/.maestro  # native mob
 
 CI runs the same flow in `.github/workflows/mobile.yml` (`maestro-android`).
 
+### iOS builds and maps (open, needs accounts)
+
+- **iOS** cannot be built on Windows. Use EAS Build: `npx eas login`, then
+  `cd apps/mobile && npx eas build --platform ios --profile development` (profiles in `eas.json`; the
+  `development` profile builds for the simulator). Installing on devices or TestFlight needs an Apple
+  Developer account (`--profile preview` / `production`).
+- **Android maps** need a Google Maps SDK key: set `android.config.googleMaps.apiKey` in
+  `apps/mobile/app.json` (or inject it in an `app.config.ts` from an env var), then rebuild the native app.
+  iOS uses Apple Maps and needs no key.
+
 Conventions (TypeScript strict, Conventional Commits, feature folders, money as integer minor units, dates
 through `@fp/domain/time`) are described in [docs/architecture.md](docs/architecture.md); decisions live in
 [docs/adr](docs/adr).
