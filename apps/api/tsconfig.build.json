@@ -1,0 +1,3 @@
+{
+  "extends": "@fp/config/tsconfig/nest.json"
+}
