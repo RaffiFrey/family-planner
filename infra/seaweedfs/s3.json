@@ -1,0 +1,9 @@
+{
+  "identities": [
+    {
+      "name": "family-planer",
+      "credentials": [{ "accessKey": "fp-s3", "secretKey": "fp-s3-secret" }],
+      "actions": ["Admin", "Read", "Write", "List", "Tagging"]
+    }
+  ]
+}

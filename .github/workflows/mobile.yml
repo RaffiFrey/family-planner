@@ -1,0 +1,80 @@
+name: Mobile
+
+on:
+  push:
+    branches: [main]
+    paths: ['apps/mobile/**', 'packages/**']
+  pull_request:
+    paths: ['apps/mobile/**', 'apps/api/**', 'packages/**']
+  workflow_dispatch:
+
+jobs:
+  maestro-android:
+    name: Native E2E (Android emulator + Maestro)
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - run: pnpm install --frozen-lockfile
+      - run: cp .env.example .env && docker compose -f infra/docker-compose.yml up -d --wait postgres redis s3 mailpit
+      - run: pnpm turbo run build --filter "@fp/api..." --filter "@fp/mobile^..."
+      - run: pnpm db:migrate && pnpm db:seed
+      - name: Build debug APK
+        working-directory: apps/mobile
+        run: npx expo prebuild --platform android --no-install && cd android && ./gradlew app:assembleDebug -x lint -x test -PreactNativeArchitectures=x86_64
+      - run: curl -fsSL "https://get.maestro.mobile.dev" | bash
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules && sudo udevadm trigger --name-match=kvm
+      - uses: reactivecircus/android-emulator-runner@v2
+        env:
+          NODE_ENV: test
+          EXPO_PUBLIC_E2E: '1'
+          EXPO_PUBLIC_API_URL: http://10.0.2.2:4000
+        with:
+          api-level: 35
+          arch: x86_64
+          target: google_apis
+          emulator-boot-timeout: 900
+          script: bash apps/mobile/.maestro/ci-android.sh
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: maestro-android
+          path: |
+            api.log
+            metro.log
+            maestro.log
+            logcat.txt
+            screen.txt
+            maestro-debug/
+
+  eas:
+    name: EAS build (preview)
+    runs-on: ubuntu-latest
+    if: ${{ vars.EAS_ENABLED == 'true' && github.event_name != 'pull_request' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm turbo run build --filter "@fp/mobile^..."
+      - uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+      - run: eas build --profile preview --platform all --non-interactive --no-wait
+        working-directory: apps/mobile

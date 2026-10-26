@@ -1,0 +1,48 @@
+# Native E2E on an Android emulator/device (English system language) with the debug build
+# installed, Metro running and the API reachable (adb reverse tcp:8081 / tcp:4000):
+#   maestro test apps/mobile/.maestro
+appId: app.familyplaner.mobile
+---
+- launchApp:
+    clearState: true
+- extendedWaitUntil:
+    visible: 'No account yet\? Sign up'
+    timeout: 90000
+- tapOn: 'No account yet\? Sign up'
+# Move between fields with the keyboard's Next/Go keys instead of tapping: on CI, Gboard's clipboard
+# tips panel can cover the next field and swallow the tap (the password then lands in the email field).
+- tapOn:
+    id: 'auth-name'
+- inputText: 'Maestro'
+- pressKey: Enter
+- inputRandomEmail
+- pressKey: Enter
+- inputText: 'correct-horse-battery'
+- pressKey: Enter
+- extendedWaitUntil:
+    visible: 'Create a household'
+    timeout: 30000
+- tapOn:
+    id: 'household-name'
+- inputText: 'Familie Maestro'
+- pressKey: Enter
+- extendedWaitUntil:
+    visible: 'Tasks'
+    timeout: 30000
+- tapOn: 'Tasks'
+- tapOn: 'New task'
+- tapOn:
+    below: 'Title'
+    index: 0
+- inputText: 'Water the plants'
+- hideKeyboard
+- scrollUntilVisible:
+    element: 'Save'
+- tapOn: 'Save'
+- extendedWaitUntil:
+    visible: 'Water the plants'
+    timeout: 15000
+- tapOn: 'Complete "Water the plants"'
+- extendedWaitUntil:
+    notVisible: 'Complete "Water the plants"'
+    timeout: 10000

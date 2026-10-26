@@ -1,0 +1,79 @@
+/*
+ * Tailwind v4 theme generated from @fp/ui-tokens (keep in sync with src/index.ts).
+ * Usage in an app's globals.css:  @import "tailwindcss"; @import "@fp/ui-tokens/tokens.css";
+ */
+@theme {
+  --color-brand-50: #eef6ff;
+  --color-brand-100: #d9eaff;
+  --color-brand-200: #bcdaff;
+  --color-brand-300: #8ec3ff;
+  --color-brand-400: #59a1ff;
+  --color-brand-500: #337dfc;
+  --color-brand-600: #1d5ef1;
+  --color-brand-700: #1549de;
+  --color-brand-800: #183cb4;
+  --color-brand-900: #1a378e;
+
+  --color-background: var(--fp-background);
+  --color-surface: var(--fp-surface);
+  --color-surface-muted: var(--fp-surface-muted);
+  --color-border: var(--fp-border);
+  --color-foreground: var(--fp-text);
+  --color-muted: var(--fp-text-muted);
+  --color-primary: var(--fp-primary);
+  --color-primary-foreground: var(--fp-primary-text);
+  --color-success: var(--fp-success);
+  --color-warning: var(--fp-warning);
+  --color-danger: var(--fp-danger);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+}
+
+:root {
+  --fp-background: #ffffff;
+  --fp-surface: #f8fafc;
+  --fp-surface-muted: #f1f5f9;
+  --fp-border: #e2e8f0;
+  --fp-text: #0f172a;
+  --fp-text-muted: #64748b;
+  --fp-primary: #1d5ef1;
+  --fp-primary-text: #ffffff;
+  --fp-success: #16a34a;
+  --fp-warning: #d97706;
+  --fp-danger: #dc2626;
+  color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --fp-background: #020617;
+    --fp-surface: #0f172a;
+    --fp-surface-muted: #1e293b;
+    --fp-border: #334155;
+    --fp-text: #f8fafc;
+    --fp-text-muted: #94a3b8;
+    --fp-primary: #59a1ff;
+    --fp-primary-text: #020617;
+    --fp-success: #22c55e;
+    --fp-warning: #f59e0b;
+    --fp-danger: #f87171;
+    color-scheme: dark;
+  }
+}
+
+:root[data-theme='dark'] {
+  --fp-background: #020617;
+  --fp-surface: #0f172a;
+  --fp-surface-muted: #1e293b;
+  --fp-border: #334155;
+  --fp-text: #f8fafc;
+  --fp-text-muted: #94a3b8;
+  --fp-primary: #59a1ff;
+  --fp-primary-text: #020617;
+  --fp-success: #22c55e;
+  --fp-warning: #f59e0b;
+  --fp-danger: #f87171;
+  color-scheme: dark;
+}

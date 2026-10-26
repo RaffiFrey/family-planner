@@ -1,0 +1,6 @@
+{
+  "extends": "@fp/config/tsconfig/nest.json",
+  "compilerOptions": { "noEmit": true, "rootDir": "${configDir}" },
+  "include": ["${configDir}/src", "${configDir}/test", "${configDir}/vitest.config.ts"],
+  "exclude": ["${configDir}/dist"]
+}

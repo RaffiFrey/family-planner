@@ -1,0 +1,5 @@
+{
+  "extends": "@fp/config/tsconfig/library.json",
+  "compilerOptions": { "noEmit": true },
+  "exclude": ["${configDir}/dist"]
+}

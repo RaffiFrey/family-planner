@@ -1,0 +1,13 @@
+pnpm-lock.yaml
+dist
+.next
+.turbo
+coverage
+packages/db/migrations
+apps/mobile/.expo
+apps/api/openapi
+apps/web/playwright-report
+apps/admin/playwright-report
+**/test-results
+**/next-env.d.ts
+apps/mobile/expo-env.d.ts
