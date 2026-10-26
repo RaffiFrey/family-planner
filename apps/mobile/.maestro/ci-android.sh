@@ -16,6 +16,12 @@ stage() { echo "::notice title=android e2e::$1 ($(date -u +%H:%M:%S))"; }
 
 fail() {
   echo "step failed: $1"
+  # What is on screen: visible texts, accessibility labels and ids of the current view hierarchy.
+  if [ "$1" = maestro ]; then
+    timeout 120 "$HOME/.maestro/bin/maestro" hierarchy 2>/dev/null |
+      grep -oE '"(text|accessibilityText|resource-id|hintText)" *: *"[^"]+"' | sort -u > screen.txt
+    annotate "screen at failure" screen.txt
+  fi
   annotate "maestro output" maestro.log
   annotate "api.log" api.log
   annotate "metro.log" metro.log
@@ -43,8 +49,11 @@ stage "building js bundle"
 curl -sS -f -o /dev/null --max-time 900 \
   "http://localhost:8081/.expo/.virtual-metro-entry.bundle?platform=android&dev=true&minify=false" \
   >> maestro.log 2>&1 || stage "bundle prewarm failed, continuing"
-stage "running maestro"
-timeout 1200 "$HOME/.maestro/bin/maestro" test --debug-output maestro-debug \
-  apps/mobile/.maestro/config.yaml apps/mobile/.maestro >> maestro.log 2>&1 || fail "maestro"
+# One flow per run (in config.yaml order) so Maestro prints every step instead of a summary.
+for flow in sign-up-and-chore shopping-list pinboard-and-emergency; do
+  stage "running maestro: $flow"
+  timeout 900 "$HOME/.maestro/bin/maestro" test --debug-output "maestro-debug/$flow" \
+    "apps/mobile/.maestro/$flow.yaml" >> maestro.log 2>&1 || fail "maestro"
+done
 stage "maestro passed"
 cat maestro.log
