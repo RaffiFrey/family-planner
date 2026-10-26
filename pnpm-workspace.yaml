@@ -1,0 +1,29 @@
+packages:
+  - apps/*
+  - packages/*
+minimumReleaseAgeExclude:
+  - '@better-auth/core@1.7.13'
+  - '@better-auth/drizzle-adapter@1.7.13'
+  - '@better-auth/kysely-adapter@1.7.13'
+  - '@better-auth/memory-adapter@1.7.13'
+  - '@better-auth/mongo-adapter@1.7.13'
+  - '@better-auth/passkey@1.7.13'
+  - '@better-auth/prisma-adapter@1.7.13'
+  - '@better-auth/telemetry@1.7.13'
+  - better-auth@1.7.13
+  - '@better-auth/expo@1.7.13'
+
+# Dependencies allowed to run install scripts (native binaries).
+allowBuilds:
+  '@parcel/watcher': true
+  '@swc/core': true
+  esbuild: true
+  sharp: true
+  msgpackr-extract: true
+  unrs-resolver: true
+  protobufjs: true
+  cpu-features: true
+  ssh2: true
+  '@sentry/cli': true
+  '@nestjs/core': true
+  tesseract.js: false

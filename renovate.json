@@ -1,0 +1,21 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":semanticCommits", "group:monorepos"],
+  "schedule": ["before 6am on monday"],
+  "timezone": "Europe/Berlin",
+  "minimumReleaseAge": "3 days",
+  "packageRules": [
+    {
+      "matchManagers": ["npm"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
+    },
+    {
+      "matchPackageNames": ["expo", "react-native", "/^expo-/", "/^@expo//"],
+      "groupName": "expo sdk",
+      "enabled": false
+    },
+    { "matchPackageNames": ["typescript"], "allowedVersions": "<6.1" }
+  ]
+}
