@@ -51,6 +51,10 @@ export function CreateHouseholdForm({
         placeholder={t('m.onboarding.householdNamePlaceholder')}
         value={name}
         onChangeText={setName}
+        returnKeyType="done"
+        onSubmitEditing={() => {
+          if (valid && !create.isPending) create.mutate();
+        }}
       />
       <TextField
         label={t('m.onboarding.yourName')}

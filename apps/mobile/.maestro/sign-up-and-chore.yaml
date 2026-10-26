@@ -9,33 +9,23 @@ appId: app.familyplaner.mobile
     visible: 'No account yet\? Sign up'
     timeout: 90000
 - tapOn: 'No account yet\? Sign up'
-# Stable ids instead of label positions: screen sizes differ between emulators, and Android's
-# hideKeyboard can fall back to the back button, which leaves the sign-up screen.
+# Move between fields with the keyboard's Next/Go keys instead of tapping: on CI, Gboard's clipboard
+# tips panel can cover the next field and swallow the tap (the password then lands in the email field).
 - tapOn:
     id: 'auth-name'
 - inputText: 'Maestro'
-- tapOn:
-    id: 'auth-email'
+- pressKey: Enter
 - inputRandomEmail
-- tapOn:
-    id: 'auth-password'
+- pressKey: Enter
 - inputText: 'correct-horse-battery'
-- scrollUntilVisible:
-    element:
-      id: 'auth-submit'
-- tapOn:
-    id: 'auth-submit'
+- pressKey: Enter
 - extendedWaitUntil:
     visible: 'Create a household'
     timeout: 30000
 - tapOn:
     id: 'household-name'
 - inputText: 'Familie Maestro'
-- scrollUntilVisible:
-    element:
-      id: 'household-create'
-- tapOn:
-    id: 'household-create'
+- pressKey: Enter
 - extendedWaitUntil:
     visible: 'Tasks'
     timeout: 30000

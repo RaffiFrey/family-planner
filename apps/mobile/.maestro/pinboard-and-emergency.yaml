@@ -1,4 +1,6 @@
 # Runs after sign-up-and-chore.yaml (reuses the signed-in session).
+# Screens are opened via deep links: the More list keeps its scroll position between runs, so
+# scrolling to an entry is direction-dependent and flaky.
 appId: app.familyplaner.mobile
 ---
 - launchApp
@@ -6,10 +8,10 @@ appId: app.familyplaner.mobile
     visible: 'More'
     timeout: 60000
 # Pinboard: write a post and see it in the feed.
-- tapOn: 'More'
-- scrollUntilVisible:
-    element: 'Pinboard'
-- tapOn: 'Pinboard'
+- openLink: familyplaner://pinboard
+- extendedWaitUntil:
+    visible: "What's new\\?"
+    timeout: 15000
 - tapOn: "What's new\\?"
 - inputText: 'Pizza am Freitag?'
 - hideKeyboard
@@ -17,11 +19,8 @@ appId: app.familyplaner.mobile
 - extendedWaitUntil:
     visible: 'Pizza am Freitag\?'
     timeout: 15000
-- back
 # Emergency card: the member's card screen opens (empty state on a new household).
-- scrollUntilVisible:
-    element: 'Contacts'
-- tapOn: 'Contacts'
+- openLink: familyplaner://contacts
 - scrollUntilVisible:
     element: "Open Maestro's emergency card"
 - tapOn: "Open Maestro's emergency card"

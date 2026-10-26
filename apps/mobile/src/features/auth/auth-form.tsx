@@ -1,9 +1,9 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'expo-router';
-import { useState } from 'react';
+import { type ComponentRef, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { View } from 'react-native';
+import { type TextInput, View } from 'react-native';
 import { z } from 'zod';
 import { Button, ScreenScroll, Text, TextField } from '@/components/ui';
 import { authClient } from '@/lib/auth-client';
@@ -20,6 +20,8 @@ type FormValues = z.infer<typeof SignUpSchema>;
 export function AuthForm({ mode }: { mode: 'signIn' | 'signUp' }) {
   const { t } = useTranslation();
   const [serverError, setServerError] = useState<string | null>(null);
+  const emailRef = useRef<ComponentRef<typeof TextInput>>(null);
+  const passwordRef = useRef<ComponentRef<typeof TextInput>>(null);
   const schema =
     mode === 'signUp' ? SignUpSchema : SignInSchema.extend({ name: z.string().optional() });
   const { control, handleSubmit, formState } = useForm<FormValues>({
@@ -72,6 +74,9 @@ export function AuthForm({ mode }: { mode: 'signIn' | 'signUp' }) {
               onBlur={field.onBlur}
               autoComplete="name"
               textContentType="name"
+              returnKeyType="next"
+              submitBehavior="submit"
+              onSubmitEditing={() => emailRef.current?.focus()}
               error={formState.errors.name ? t('m.auth.nameRequired') : undefined}
             />
           )}
@@ -83,6 +88,10 @@ export function AuthForm({ mode }: { mode: 'signIn' | 'signUp' }) {
         render={({ field }) => (
           <TextField
             testID="auth-email"
+            ref={emailRef}
+            returnKeyType="next"
+            submitBehavior="submit"
+            onSubmitEditing={() => passwordRef.current?.focus()}
             label={t('common.email')}
             value={field.value}
             onChangeText={field.onChange}
@@ -101,6 +110,9 @@ export function AuthForm({ mode }: { mode: 'signIn' | 'signUp' }) {
         render={({ field }) => (
           <TextField
             testID="auth-password"
+            ref={passwordRef}
+            returnKeyType="go"
+            onSubmitEditing={() => void onSubmit()}
             label={t('common.password')}
             value={field.value}
             onChangeText={field.onChange}
